@@ -1,0 +1,7 @@
+.idea
+*.iml
+build
+**/target
+.local
+.bloop
+*.sc
