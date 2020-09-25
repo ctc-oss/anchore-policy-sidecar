@@ -16,6 +16,8 @@ scalacOptions ++= Seq(
 
 libraryDependencies := Seq(
   "dev.zio" %% "zio" % "1.0.0",
+  "dev.zio" %% "zio-config" % "1.0.0-RC27",
+  "com.lihaoyi" %% "requests" % "0.6.5",
   "io.spray" %%  "spray-json" % "1.3.5",
   "org.scalatest" %% "scalatest" % "3.2.0" % Test
 )
