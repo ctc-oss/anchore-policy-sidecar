@@ -1,9 +1,29 @@
 package com.ctc.g2w
 
+import requests.RequestBlob
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 
 object anchore {
   type HttpConfig = zio.config.ZConfig[anchore.config.Http]
+
+  // grant_type=password&client_id=anonymous&username=admin&password=foobar
+  val defaultAuth = OAuthCredentials("anonymous", "admin", "foobar")
+
+  case class OAuthCredentials(client_id: String, username: String, password: String)
+  object OAuthCredentials {
+    implicit def oauthRequestBlob(oa: OAuthCredentials): RequestBlob = RequestBlob.FormEncodedRequestBlob(
+      Seq("client_id" -> oa.client_id, "username" -> oa.username, "password" -> oa.password, "grant_type" -> "password")
+    )
+  }
+
+  case class OAuthResponse(access_token: String, expires_in: Int)
+  object OAuthResponse extends DefaultJsonProtocol {
+    implicit val format: RootJsonFormat[OAuthResponse] = jsonFormat2(OAuthResponse.apply)
+
+    implicit class ResponseToRequest(r: OAuthResponse) {
+      def headers = Map("Authorization" -> s"Bearer ${r.access_token}")
+    }
+  }
 
   object config {
     import zio.config._
@@ -15,7 +35,7 @@ object anchore {
     val http: ConfigDescriptor[Http] =
       (
         string("ANCHORE_ADDR").default("localhost") |@|
-          int("ANCHORE_PORT").default(8080)
+          int("ANCHORE_PORT").default(8228)
       )(Http.apply, Http.unapply)
   }
 
