@@ -43,7 +43,7 @@ object anchore {
           val tokenBuffer = 100 // todo;; move to config
           def token(): Task[OAuthToken] =
             tokenRef.get.flatMap { tok =>
-              if (tok.expiresWithin(tokenBuffer))
+              if (tok.expiresWithin(tokenBuffer)) {
                 ZIO
                   .effect(
                     requests
@@ -52,8 +52,8 @@ object anchore {
                       .parseJson
                       .convertTo[OAuthResponse]
                   )
-                  .map(r => OAuthToken(r.access_token, Instant.now().plusSeconds(r.expires_in)))
-              else Task.succeed(tok)
+                  .flatMap(r => tokenRef.updateAndGet(_ => r.token))
+              } else Task.succeed(tok)
             }
         }
       }
@@ -83,8 +83,9 @@ object anchore {
   object OAuthResponse extends DefaultJsonProtocol {
     implicit val format: RootJsonFormat[OAuthResponse] = jsonFormat2(OAuthResponse.apply)
 
-    implicit class ResponseToRequest(r: OAuthResponse) {
+    implicit class RichResponse(r: OAuthResponse) {
       def headers = Map("Authorization" -> s"Bearer ${r.access_token}")
+      def token = OAuthToken(r.access_token, Instant.now().plusSeconds(r.expires_in))
     }
   }
 
