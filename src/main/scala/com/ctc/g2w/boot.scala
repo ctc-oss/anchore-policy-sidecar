@@ -2,7 +2,7 @@ package com.ctc.g2w
 
 import com.ctc.g2w.anchore.{AnchoreAPI, AnchoreAuth}
 import zio._
-import zio.config.{ReadError, ZConfig, getConfig}
+import zio.config.{getConfig, ReadError, ZConfig}
 import zio.console._
 import zio.system.System
 
@@ -20,7 +20,7 @@ object boot extends scala.App {
     _ <- putStrLn(s"result: $hc")
     token <- AnchoreAuth.token()
     _ <- putStrLn(s"result: $token")
-    p <- ZIO.effect(requests.get(url = s"${c.url()}/policies", headers = Map("Authorization"->s"Bearer ${token.value}")))
+    p <- AnchoreAPI.policies()
     _ <- putStrLn(s"result: $p")
   } yield ()
 

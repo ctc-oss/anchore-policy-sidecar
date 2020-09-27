@@ -2,8 +2,9 @@ package com.ctc.g2w
 
 import java.time.Instant
 
+import com.ctc.g2w.anchore.api.PolicyBundleRecord
 import requests.RequestBlob
-import spray.json.{DefaultJsonProtocol, RootJsonFormat}
+import spray.json.{DefaultJsonProtocol, RootJsonFormat, _}
 import zio._
 
 object anchore {
@@ -13,9 +14,10 @@ object anchore {
   object AnchoreAPI {
     trait Service {
       def health(): UIO[anchore.api.Health]
+      def policies(): ZIO[AnchoreAuth, Throwable, List[PolicyBundleRecord]]
     }
 
-    def live(cfg: anchore.config.Http): Layer[Has[AnchoreAuth], AnchoreAPI] = ZLayer.succeed(
+    def live(cfg: anchore.config.Http): Layer[Has[AnchoreAuth.Service], AnchoreAPI] = ZLayer.succeed(
       new AnchoreAPI.Service {
         def health(): UIO[api.Health] =
           ZIO
@@ -24,10 +26,22 @@ object anchore {
               case 200 => anchore.api.Health.Ok
             }
             .orElse(ZIO.succeed(anchore.api.Health.Fail))
+
+        def policies(): ZIO[AnchoreAuth, Throwable, List[PolicyBundleRecord]] =
+          for {
+            tok <- AnchoreAuth.token()
+            res = requests
+              .get(s"${cfg.url()}/policies", headers = tok.headers, params = Map("detail" -> "true"))
+              .text()
+              .parseJson
+              .convertTo[List[PolicyBundleRecord]]
+          } yield res
       }
     )
 
     def health(): URIO[AnchoreAPI, anchore.api.Health] = ZIO.accessM(_.get.health())
+    def policies(): ZIO[AnchoreAPI with AnchoreAuth, Throwable, List[PolicyBundleRecord]] =
+      ZIO.accessM(_.get.policies())
   }
 
   type AnchoreAuth = Has[AnchoreAuth.Service]
@@ -39,7 +53,6 @@ object anchore {
     def make(cfg: anchore.config.Http): Layer[Nothing, AnchoreAuth] = ZLayer.fromEffect(
       Ref.make(OAuthToken.Expired).map { tokenRef =>
         new AnchoreAuth.Service {
-          import spray.json._
           val tokenBuffer = 100 // todo;; move to config
           def token(): Task[OAuthToken] =
             tokenRef.get.flatMap { tok =>
@@ -72,20 +85,22 @@ object anchore {
     )
   }
 
-  case class OAuthToken(value: String, expires: Instant) {
-    def expiresWithin(sec: Int): Boolean = expires.plusSeconds(sec).isAfter(expires)
-    def isExpired: Boolean = Instant.now().isAfter(expires)
-  }
+  case class OAuthToken(value: String, expires: Instant)
   object OAuthToken {
     val Expired = OAuthToken("_", Instant.ofEpochSecond(0))
+
+    implicit class exOauthToken(t: OAuthToken) {
+      def expiresWithin(sec: Int): Boolean = t.expires.plusSeconds(sec).isAfter(t.expires)
+      def isExpired: Boolean = Instant.now().isAfter(t.expires)
+      def headers = Map("Authorization" -> s"Bearer ${t.value}")
+    }
   }
   case class OAuthResponse(access_token: String, expires_in: Int)
   object OAuthResponse extends DefaultJsonProtocol {
     implicit val format: RootJsonFormat[OAuthResponse] = jsonFormat2(OAuthResponse.apply)
 
     implicit class RichResponse(r: OAuthResponse) {
-      def headers = Map("Authorization" -> s"Bearer ${r.access_token}")
-      def token = OAuthToken(r.access_token, Instant.now().plusSeconds(r.expires_in))
+      def token: OAuthToken = OAuthToken(r.access_token, Instant.now().plusSeconds(r.expires_in))
     }
   }
 
@@ -126,6 +141,17 @@ object anchore {
     )
     object PolicyBundle extends DefaultJsonProtocol {
       implicit val format: RootJsonFormat[PolicyBundle] = jsonFormat9(PolicyBundle.apply)
+    }
+
+    case class PolicyBundleRecord(
+        policyId: Option[String],
+        active: Option[Boolean],
+        userId: Option[String],
+        policy_source: Option[String],
+        policybundle: Option[PolicyBundle]
+    )
+    object PolicyBundleRecord extends DefaultJsonProtocol {
+      implicit val format: RootJsonFormat[PolicyBundleRecord] = jsonFormat5(PolicyBundleRecord.apply)
     }
 
     case class Policy(
