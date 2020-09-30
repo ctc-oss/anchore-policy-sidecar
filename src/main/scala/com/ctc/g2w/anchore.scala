@@ -17,7 +17,7 @@ object anchore {
       def policies(): ZIO[AnchoreAuth, Throwable, List[PolicyBundleRecord]]
     }
 
-    def live(cfg: anchore.config.Http): Layer[Has[AnchoreAuth.Service], AnchoreAPI] = ZLayer.succeed(
+    def live(cfg: anchore.config.Http): Layer[AnchoreAuth, AnchoreAPI] = ZLayer.succeed(
       new AnchoreAPI.Service {
         def health(): UIO[api.Health] =
           ZIO
@@ -50,27 +50,29 @@ object anchore {
       def token(): Task[OAuthToken]
     }
 
-    def make(cfg: anchore.config.Http): Layer[Nothing, AnchoreAuth] = ZLayer.fromEffect(
-      Ref.make(OAuthToken.Expired).map { tokenRef =>
-        new AnchoreAuth.Service {
-          val tokenBuffer = 100 // todo;; move to config
-          def token(): Task[OAuthToken] =
-            tokenRef.get.flatMap { tok =>
-              if (tok.expiresWithin(tokenBuffer)) {
-                ZIO
-                  .effect(
-                    requests
-                      .post(s"${cfg.url()}/oauth/token", data = anchore.defaultAuth)
-                      .text()
-                      .parseJson
-                      .convertTo[OAuthResponse]
-                  )
-                  .flatMap(r => tokenRef.updateAndGet(_ => r.token))
-              } else Task.succeed(tok)
-            }
+    def make(cfg: anchore.config.Http): Layer[Nothing, AnchoreAuth] =
+      Ref
+        .make(OAuthToken.Expired)
+        .map { tokenRef =>
+          new AnchoreAuth.Service {
+            val tokenBuffer = 100 // todo;; move to config
+            def token(): Task[OAuthToken] =
+              tokenRef.get.flatMap { tok =>
+                if (tok.expiresWithin(tokenBuffer)) {
+                  ZIO
+                    .effect(
+                      requests
+                        .post(s"${cfg.url()}/oauth/token", data = anchore.defaultAuth)
+                        .text()
+                        .parseJson
+                        .convertTo[OAuthResponse]
+                    )
+                    .flatMap(r => tokenRef.updateAndGet(_ => r.token))
+                } else Task.succeed(tok)
+              }
+          }
         }
-      }
-    )
+        .toLayer
 
     def token(): RIO[AnchoreAuth, OAuthToken] = ZIO.accessM(_.get.token())
   }
