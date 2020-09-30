@@ -16,8 +16,8 @@ object boot extends scala.App {
   val cfg: Layer[ReadError[String], anchore.HttpConfig] = System.live >>> ZConfig.fromSystemEnv(anchore.config.http)
   val api = AnchoreAPI.live(HackConfigForNow)
   val auth = AnchoreAuth.make(HackConfigForNow)
-  val git = Git.live(Paths.get(sys.env("PWD")))
-  val deps = cfg ++ auth ++ api ++ git ++ Blocking.live ++ Console.live
+  val git = Git.from(Paths.get(sys.env("PWD")))
+  val deps = cfg >+> auth >+> api >+> Blocking.live >+> git >+> Console.live
 
   val app = for {
     c <- getConfig[anchore.config.Http]
