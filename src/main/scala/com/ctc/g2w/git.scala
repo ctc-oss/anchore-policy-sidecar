@@ -14,35 +14,39 @@ object git {
   type Git = Has[Git.Service]
   object Git {
     trait Service {
+      def version(): ZIO[Blocking, CommandError, String]
       def head(): ZIO[Blocking, CommandError, Sha]
     }
 
-    private def cmd(gitdir: Path, processName: String, args: String*): Command =
-      Command(processName, args: _*).workingDirectory(gitdir.toFile)
-
-    type Head = Ref[String]
-
+    private type Head = Ref[String]
     private def svc(path: Path, head: Head): Git.Service =
       new Git.Service {
+        def version(): ZIO[Blocking, CommandError, String] =
+          git(path, "version").string
+
         def head(): ZIO[Blocking, CommandError, Sha] =
-          cmd(path, "git", "rev-parse", "HEAD").run.flatMap(r => r.stdout.string.map(Sha))
+          git(path, "rev-parse", "HEAD").run.flatMap(r => r.stdout.string.map(Sha))
       }
 
     def from(url: String, path: Path): ZLayer[Blocking, CommandError, Git] = {
       for {
         _ <- Command("git", "clone", url, path.toString).run
-        sha <- cmd(path, "git", "rev-parse", "HEAD").string
+        sha <- git(path, "rev-parse", "HEAD").string
         ref <- Ref.make(sha)
       } yield svc(path, ref)
     }.toLayer
 
     def from(path: Path): ZLayer[Blocking, CommandError, Git] = {
       for {
-        sha <- cmd(path, "git", "rev-parse", "HEAD").string
+        sha <- git(path, "rev-parse", "HEAD").string
         ref <- Ref.make(sha)
       } yield svc(path, ref)
     }.toLayer
 
+    def version(): ZIO[Git with Blocking, CommandError, String] = ZIO.accessM(_.get.version())
     def head(): ZIO[Git with Blocking, CommandError, Sha] = ZIO.accessM(_.get.head())
+
+    private def git(gitdir: Path, args: String*): Command =
+      Command("git", args: _*).workingDirectory(gitdir.toFile)
   }
 }
