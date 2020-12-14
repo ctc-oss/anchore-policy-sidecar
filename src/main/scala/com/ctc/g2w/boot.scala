@@ -1,14 +1,16 @@
 package com.ctc.g2w
 
-import java.nio.file.Paths
-
 import com.ctc.g2w.anchore.{AnchoreAPI, AnchoreAuth}
 import com.ctc.g2w.git.Git
 import zio._
 import zio.blocking.Blocking
+import zio.clock.Clock
 import zio.config.{ReadError, ZConfig, getConfig}
 import zio.console._
+import zio.duration.durationInt
 import zio.system.System
+
+import java.nio.file.Paths
 
 object boot extends scala.App {
   val HackConfigForNow = anchore.config.Http("localhost", 8228)
@@ -17,7 +19,7 @@ object boot extends scala.App {
   val api = AnchoreAPI.live(HackConfigForNow)
   val auth = AnchoreAuth.make(HackConfigForNow)
   val git = Git.from(Paths.get(sys.env("PWD")))
-  val deps = cfg >+> auth >+> api >+> Blocking.live >+> git >+> Console.live
+  val deps = Blocking.live >+> Console.live >+> Clock.live >+> cfg >+> auth >+> api >+>  git
 
   val app = for {
     c <- getConfig[anchore.config.Http]
@@ -29,6 +31,14 @@ object boot extends scala.App {
     _ <- putStrLn(s"result: $p")
     sha <- Git.head()
     _ <- putStrLn(s"result: ${sha.value}")
+
+    poll = for {
+      frist <- Git.head().map(_.short)
+      pulled <- Git.pull().map(_.short)
+    } yield {
+      println(s"$frist => $pulled")
+    }
+    _<- poll.repeat(Schedule.spaced(10.second))
   } yield ()
 
   Runtime.unsafeFromLayer(deps).unsafeRun(app)
