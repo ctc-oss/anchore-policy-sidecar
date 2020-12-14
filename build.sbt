@@ -28,3 +28,7 @@ libraryDependencies := Seq(
 
 enablePlugins(GitVersioning, JavaServerAppPackaging)
 testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+
+dockerUpdateLatest := true
+dockerExposedPorts := Seq(9000)
+dockerBaseImage := "adoptopenjdk/openjdk11:debianslim-jre"
