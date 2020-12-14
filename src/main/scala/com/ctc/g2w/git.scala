@@ -16,6 +16,7 @@ object git {
     trait Service {
       def version(): ZIO[Blocking, CommandError, String]
       def head(): ZIO[Blocking, CommandError, Sha]
+      def pull(): ZIO[Blocking, CommandError, Sha] // updated sha
     }
 
     private type Head = Ref[String]
@@ -25,7 +26,10 @@ object git {
           git(path, "version").string
 
         def head(): ZIO[Blocking, CommandError, Sha] =
-          git(path, "rev-parse", "HEAD").run.flatMap(r => r.stdout.string.map(Sha))
+          git(path, "rev-parse", "HEAD").run.flatMap(_.stdout.string.map(_.trim).map(Sha))
+
+        def pull(): ZIO[Blocking, CommandError, Sha] =
+          git(path, "pull").run *> head()
       }
 
     def from(url: String, path: Path): ZLayer[Blocking, CommandError, Git] = {
@@ -45,6 +49,7 @@ object git {
 
     def version(): ZIO[Git with Blocking, CommandError, String] = ZIO.accessM(_.get.version())
     def head(): ZIO[Git with Blocking, CommandError, Sha] = ZIO.accessM(_.get.head())
+    def pull(): ZIO[Git with Blocking, CommandError, Sha] = ZIO.accessM(_.get.pull())
 
     private def git(gitdir: Path, args: String*): Command =
       Command("git", args: _*).workingDirectory(gitdir.toFile)
