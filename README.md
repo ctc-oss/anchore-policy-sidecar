@@ -3,9 +3,23 @@ gray to white
 
 lists
 
+Anchore sidecar that generates whitelists from a git repo and applies as an anchore policy.
+
+### modes
+
+- Ref: run once against a specified ref and then terminate
+- Branch: run once against a branch ref and then continue to poll for additional commits to the branch
+
 ### dev
 
 see the [hack](hack) directory for helpers
+
+```
+./hack/run-anchore.sh
+
+```
+
+### anchore api models
 
 the anchore api models were generated with [sbt-swagger-codegen](https://github.com/unicredit/sbt-swagger-codegen) with some hand tuning / pruning
 

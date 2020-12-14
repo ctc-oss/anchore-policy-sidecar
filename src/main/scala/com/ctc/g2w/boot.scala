@@ -5,7 +5,8 @@ import com.ctc.g2w.git.Git
 import zio._
 import zio.blocking.Blocking
 import zio.clock.Clock
-import zio.config.{ReadError, ZConfig, getConfig}
+import zio.config.typesafe.TypesafeConfig
+import zio.config.{ZConfig, getConfig}
 import zio.console._
 import zio.duration.durationInt
 import zio.system.System
@@ -15,14 +16,15 @@ import java.nio.file.Paths
 object boot extends scala.App {
   val HackConfigForNow = anchore.config.Http("localhost", 8228)
 
-  val cfg: Layer[ReadError[String], anchore.HttpConfig] = System.live >>> ZConfig.fromSystemEnv(anchore.config.http)
-  val api = AnchoreAPI.live(HackConfigForNow)
-  val auth = AnchoreAuth.make(HackConfigForNow)
-  val git = Git.from(Paths.get(sys.env("PWD")))
-  val deps = Blocking.live >+> Console.live >+> Clock.live >+> cfg >+> auth >+> api >+>  git
+  val _cfg = System.live >>> ZConfig.fromSystemEnv(anchore.config.http) >>> TypesafeConfig.fromDefaultLoader(git.config.mode)
+  val _api = AnchoreAPI.live(HackConfigForNow)
+  val _auth = AnchoreAuth.make(HackConfigForNow)
+  val _git = Git.from(Paths.get(sys.env("PWD")))
+  val deps = Blocking.live >+> Console.live >+> Clock.live >+> _cfg >+> _auth >+> _api >+>  _git
 
   val app = for {
-    c <- getConfig[anchore.config.Http]
+    mode <- getConfig[git.config.Mode]
+    _ <- putStrLn(s"${mode}")
     hc <- AnchoreAPI.health()
     _ <- putStrLn(s"result: $hc")
     token <- AnchoreAuth.token()
