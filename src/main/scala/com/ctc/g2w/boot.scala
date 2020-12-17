@@ -11,28 +11,27 @@ import zio.console._
 import zio.duration.durationInt
 import zio.system.System
 
-import java.nio.file.Paths
-
 object boot extends scala.App {
   val HackConfigForNow = anchore.config.Http("localhost", 8228)
 
-  val _cfg = System.live >>> ZConfig.fromSystemEnv(anchore.config.http) >>> TypesafeConfig.fromDefaultLoader(git.config.mode)
-  val _api = AnchoreAPI.live(HackConfigForNow)
-  val _auth = AnchoreAuth.make(HackConfigForNow)
-  val _git = Git.from(Paths.get(sys.env("PWD")))
-  val deps = Blocking.live >+> Console.live >+> Clock.live >+> _cfg >+> _auth >+> _api >+>  _git
+  val _auth = ZConfig.fromSystemEnv(anchore.config.http) >+> AnchoreAuth.make(HackConfigForNow)
+  val _api = _auth >+> AnchoreAPI.live(HackConfigForNow)
+  val _git = Blocking.live >+> TypesafeConfig.fromDefaultLoader(git.config.mode) >+> TypesafeConfig.fromDefaultLoader(git.config.repo) >+> Git.fromConfig()
+  val deps = System.live >+> Console.live >+> Clock.live >+> _api >+> _git
 
   val app = for {
     mode <- getConfig[git.config.Mode]
     _ <- putStrLn(s"${mode}")
+    repo <- getConfig[git.config.Repo]
+    _ <- putStrLn(s"repo: ${repo.url}")
     hc <- AnchoreAPI.health()
-    _ <- putStrLn(s"result: $hc")
+    _ <- putStrLn(s"anchore health: $hc")
     token <- AnchoreAuth.token()
-    _ <- putStrLn(s"result: $token")
+    _ <- putStrLn(s"anchore token: $token")
     p <- AnchoreAPI.policies()
-    _ <- putStrLn(s"result: $p")
+    _ <- putStrLn(s"anchore policy: $p")
     sha <- Git.head()
-    _ <- putStrLn(s"result: ${sha.value}")
+    _ <- putStrLn(s"git sha: ${sha.value}")
 
     poll = for {
       frist <- Git.head().map(_.short)
