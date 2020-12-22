@@ -1,3 +1,5 @@
+import com.typesafe.sbt.packager.docker._
+
 enablePlugins(GitVersioning, JavaServerAppPackaging, DockerPlugin)
 
 name := "anchore-g2w"
@@ -34,3 +36,20 @@ testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
 dockerUpdateLatest := true
 dockerExposedPorts := Seq(9000)
 dockerBaseImage := "adoptopenjdk/openjdk11:debianslim-jre"
+dockerCommands ++= Seq(
+  Cmd("USER", "root"),
+  ExecCmd("RUN", "apt", "update"),
+  ExecCmd("RUN", "apt", "install", "-y", "git"),
+  ExecCmd("RUN", "apt", "clean"),
+  Cmd("USER", "1001")
+)
+dockerUsername := Some("jwiii")
+dockerRepository := {
+  if (sys.env.exists {
+        case ("uK8s", "1") => true
+        case ("uK8s", "0") => false
+        case ("uK8s", b)   => b.toBoolean
+        case _                 => false
+      }) Some("localhost:32000")
+  else None
+}

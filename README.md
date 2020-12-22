@@ -14,10 +14,15 @@ Anchore sidecar that generates whitelists from a git repo and applies as an anch
 
 see the [hack](hack) directory for helpers
 
-```
-./hack/run-anchore.sh
+### deploy to Microk8s
 
-```
+`uK8s=1 sbt docker:publish`
+
+`k apply -f k8s.yml`
+
+### clean up
+
+`k delete all -l app=anchore-w-sidecar`
 
 ### anchore api models
 
