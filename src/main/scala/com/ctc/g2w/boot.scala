@@ -1,8 +1,8 @@
 package com.ctc.g2w
 
-import com.ctc.g2w.anchore.api.{PolicyBundle, PolicyBundleRecord}
 import com.ctc.g2w.anchore.{AnchoreAPI, AnchoreAuth}
-import com.ctc.g2w.api.InitError
+import com.ctc.g2w.api.anchore.{PolicyBundle, PolicyBundleRecord}
+import com.ctc.g2w.api.exceptions.InitError
 import com.ctc.g2w.git.Git
 import com.ctc.g2w.implicits._
 import spray.json._
@@ -16,18 +16,18 @@ import zio.duration.durationInt
 import zio.system.System
 
 object boot extends scala.App {
-  val HackConfigForNow = anchore.config.Http("localhost", 8228)
+  val HackConfigForNow = cfg.anchore.Http("localhost", 8228)
 
-  val _auth = ZConfig.fromSystemEnv(anchore.config.http) >+> AnchoreAuth.make(HackConfigForNow)
+  val _auth = ZConfig.fromSystemEnv(cfg.anchore.http) >+> AnchoreAuth.make(HackConfigForNow)
   val _api = _auth >+> AnchoreAPI.live(HackConfigForNow)
-  val _git = Blocking.live >+> TypesafeConfig.fromDefaultLoader(git.config.mode) >+> TypesafeConfig.fromDefaultLoader(
-    git.config.repo
+  val _git = Blocking.live >+> TypesafeConfig.fromDefaultLoader(cfg.git.mode) >+> TypesafeConfig.fromDefaultLoader(
+    cfg.git.repo
   ) >+> Git.fromConfig()
 
   val app = for {
-    mode <- getConfig[git.config.Mode]
+    mode <- getConfig[cfg.git.Mode]
     _ <- putStrLn(s"${mode}")
-    repo <- getConfig[git.config.Repo]
+    repo <- getConfig[cfg.git.Repo]
     _ <- putStrLn(s"repo: ${repo.url}")
     hc <- AnchoreAPI.health() // todo;; backoff
     _ <- putStrLn(s"anchore health: $hc")

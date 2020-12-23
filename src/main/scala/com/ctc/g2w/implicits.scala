@@ -1,6 +1,6 @@
 package com.ctc.g2w
 
-import com.ctc.g2w.anchore.api.{Whitelist, WhitelistItem}
+import com.ctc.g2w.api.anchore.{Whitelist, WhitelistItem}
 import com.ctc.g2w.git.Sha
 import com.ctc.g2w.greylist.Greylist
 

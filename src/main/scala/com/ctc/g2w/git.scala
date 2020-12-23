@@ -8,7 +8,7 @@ import zio.process.{Command, CommandError}
 import java.nio.file.{Files, Path}
 
 object git {
-  type RepoConfig = zio.config.ZConfig[git.config.Repo]
+  type RepoConfig = zio.config.ZConfig[cfg.git.Repo]
 
   case class Sha(value: String) {
     def short = Sha(value.take(8))
@@ -38,9 +38,10 @@ object git {
           git(path, "pull").run *> head()
       }
 
-    def fromConfig(): ZLayer[RepoConfig with Blocking, Throwable, Git] = ZLayer.fromAcquireRelease {
-      for {
-          repo <- getConfig[config.Repo].map(_.url)
+    def fromConfig(): ZLayer[RepoConfig with Blocking, Throwable, Git] =
+      ZLayer.fromAcquireRelease {
+        for {
+          repo <- getConfig[cfg.git.Repo].map(_.url)
           path <- IO.effect(Files.createTempDirectory(repo.split("/").last))
           ___ <- Command("git", "clone", repo, path.toString).run.tap(_.exitCode)
           sha <- git(path, "rev-parse", "--short", "5", "HEAD").run.flatMap(_.stdout.string)
@@ -64,32 +65,4 @@ object git {
       Command("git", args: _*).workingDirectory(gitdir.toFile)
   }
 
-  object config {
-    import zio.config._
-    import ConfigDescriptor._
-
-    case class Repo(url: String)
-
-    sealed trait Mode { def name: String }
-    case class Ref(name: String) extends Mode
-    case class Branch(name: String) extends Mode
-
-    object Mode {
-      def apply(mode: String, name: String): Mode = mode match {
-        case "ref"    => Ref(name)
-        case "branch" => Branch(name)
-        case _        => throw new IllegalArgumentException(mode)
-      }
-      def unapply(m: Mode): Option[(String, String)] = m match {
-        case Ref(n)    => Some("ref" -> n)
-        case Branch(n) => Some("branch" -> n)
-        case _         => None
-      }
-    }
-
-    val mode: ConfigDescriptor[Mode] =
-      (string("mode") |@| string("ref"))(Mode.apply, Mode.unapply)
-
-    val repo: ConfigDescriptor[Repo] = string("repo")(Repo.apply, Repo.unapply)
-  }
 }

@@ -1,8 +1,8 @@
 package com.ctc.g2w
 
-import com.ctc.g2w.anchore.api.PolicyBundle
+import com.ctc.g2w.api.anchore.PolicyBundle
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.{matchers, OptionValues}
+import org.scalatest.{OptionValues, matchers}
 import spray.json._
 
 import scala.io.Source
