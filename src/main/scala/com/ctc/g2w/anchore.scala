@@ -1,11 +1,11 @@
 package com.ctc.g2w
 
-import java.time.Instant
-
 import com.ctc.g2w.anchore.api.PolicyBundleRecord
 import requests.RequestBlob
 import spray.json.{DefaultJsonProtocol, RootJsonFormat, _}
 import zio._
+
+import java.time.Instant
 
 object anchore {
   type HttpConfig = zio.config.ZConfig[anchore.config.Http]
@@ -14,6 +14,7 @@ object anchore {
   object AnchoreAPI {
     trait Service {
       def health(): UIO[anchore.api.Health]
+      def activePolicy(): ZIO[AnchoreAuth, Throwable, PolicyBundleRecord]
       def policies(): ZIO[AnchoreAuth, Throwable, List[PolicyBundleRecord]]
     }
 
@@ -26,6 +27,9 @@ object anchore {
               case 200 => anchore.api.Health.Ok
             }
             .orElse(ZIO.succeed(anchore.api.Health.Fail))
+
+        def activePolicy(): ZIO[AnchoreAuth, Throwable, PolicyBundleRecord] =
+          policies().map(_.filter(_.active.getOrElse(false))).map(_.head)
 
         def policies(): ZIO[AnchoreAuth, Throwable, List[PolicyBundleRecord]] =
           for {
@@ -40,6 +44,8 @@ object anchore {
     )
 
     def health(): URIO[AnchoreAPI, anchore.api.Health] = ZIO.accessM(_.get.health())
+    def activePolicy(): ZIO[AnchoreAPI with AnchoreAuth, Throwable, PolicyBundleRecord] =
+      ZIO.accessM(_.get.activePolicy())
     def policies(): ZIO[AnchoreAPI with AnchoreAuth, Throwable, List[PolicyBundleRecord]] =
       ZIO.accessM(_.get.policies())
   }
