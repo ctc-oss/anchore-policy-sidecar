@@ -2,7 +2,7 @@ import com.typesafe.sbt.packager.docker._
 
 enablePlugins(GitVersioning, JavaServerAppPackaging, DockerPlugin)
 
-name := "anchore-g2w"
+name := "anchore-policy-sidecar"
 scalaVersion := "2.13.3"
 git.useGitDescribe := true
 scalacOptions ++= Seq(

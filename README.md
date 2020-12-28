@@ -1,9 +1,9 @@
-gray to white
+anchore policy sidecar
 ===
 
-lists
+### gitops policy automation for anchore 
 
-Anchore sidecar that generates whitelists from a git repo and applies as an anchore policy.
+A sidecar service that schedules policy generation from git managed metadata and applies as an anchore policy.
 
 ### modes
 
