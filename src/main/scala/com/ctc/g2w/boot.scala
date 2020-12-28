@@ -1,8 +1,7 @@
 package com.ctc.g2w
 
 import com.ctc.g2w.anchore.{AnchoreAPI, AnchoreAuth}
-import com.ctc.g2w.api.anchore.{PolicyBundle, PolicyBundleRecord}
-import com.ctc.g2w.api.exceptions.InitError
+import com.ctc.g2w.api.exceptions.{ReadActivePolicyError, ReadActivePolicyVersionError}
 import com.ctc.g2w.git.Git
 import com.ctc.g2w.implicits._
 import spray.json._
@@ -31,34 +30,35 @@ object boot extends scala.App {
     _ <- putStrLn(s"repo: ${repo.url}")
     hc <- AnchoreAPI.health() // todo;; backoff
     _ <- putStrLn(s"anchore health: $hc")
+
     policy <- AnchoreAPI
       .activePolicy()
-      .bimap({ e =>
-         InitError("no active policy found", e)
-      }, Ref.make)
+      .bimap(_ => ReadActivePolicyError(), Ref.make).flatten
+
+    version <- policy.get.map(_.policybundle.map(_.version))
+      .someOrFail(ReadActivePolicyVersionError())
+      .flatMap(Ref.make)
 
     poll = for {
-      head <- Git.head() // todo;; Ref, created outside of poll
-      pull <- Git.pull()
+      head <- Git.pull()
 
       update = for {
-        single <- greylist.readSingle()
-        _ <- putStrLn(s"$head => $pull")
-        white = single.asWhitelist(pull)
-        _ <- putStrLn(white.toJson.prettyPrint)
+        wl <- greylist.readSingle().map(_.asWhitelist(head))
+        _ <- putStrLn(wl.toJson.prettyPrint)
         // todo;; send the whitelist to anchore...
       } yield ()
 
-      _ <- policy.flatMap(_.get).flatMap {
-        case PolicyBundleRecord(_, _, _, _, Some(PolicyBundle(_, _, _, _, Some(wl), _, _, _, _)))
-            if wl.exists(_.version == pull.value) =>
-          putStrLn("existing policy is up to date")
-        case _ =>
+      h = head.value
+      _ <- version.get.flatMap {
+        case v if v == h =>
+          putStrLn(s"existing policy is up to date @ $h")
+        case v =>
           for {
-            _ <- putStrLn("updating policy...")
-            _ <- update
+            _ <- putStrLn(s"updating policy from $v to $h...")
+            _ <- update.andThen(version.set(h))
           } yield ()
       }
+
     } yield ()
 
     _ <- poll.repeat(Schedule.spaced(10.second))
