@@ -1,9 +1,11 @@
 anchore policy sidecar
 ===
 
-### gitops policy automation for anchore 
+[Docs](doc/README.md)
 
-A sidecar service that schedules policy generation from git managed metadata and applies as an anchore policy.
+### policy automation through gitops
+
+A sidecar operator that schedules policy generation from git managed metadata and applies as an anchore policy.
 
 ### modes
 
