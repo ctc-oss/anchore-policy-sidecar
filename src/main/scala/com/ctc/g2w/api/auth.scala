@@ -23,7 +23,7 @@ object auth {
     implicit class exOauthToken(t: OAuthToken) {
       def expiresWithin(sec: Int): Boolean = t.expires.plusSeconds(sec).isAfter(t.expires)
       def isExpired: Boolean = Instant.now().isAfter(t.expires)
-      def headers = Map("Authorization" -> s"Bearer ${t.value}")
+      def headers: Iterable[(String, String)] = Map("Authorization" -> s"Bearer ${t.value}")
     }
   }
   case class OAuthResponse(access_token: String, expires_in: Int)

@@ -17,4 +17,13 @@ class ReadDefaultBundle extends AnyWordSpec with OptionValues with matchers.shou
       b.policies.head.rules.value.length shouldBe 6
     }
   }
+
+  "default bundle" should {
+    "round trip serialize" in {
+      val b = defaults.anchore.DefaultBundle.toJson.prettyPrint.parseJson.convertTo[PolicyBundle]
+
+      b.whitelists.value.length shouldBe 1
+      b.policies.head.rules.value.length shouldBe 6
+    }
+  }
 }

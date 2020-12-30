@@ -44,8 +44,8 @@ object boot extends scala.App {
 
       update = for {
         wl <- greylist.readSingle().map(_.asWhitelist(head))
-        _ <- putStrLn(wl.toJson.prettyPrint)
-        // todo;; send the whitelist to anchore...
+        b <- AnchoreAPI.activate(wl)
+        _ <- putStrLn(b.toJson.prettyPrint)
       } yield ()
 
       h = head.value

@@ -1,9 +1,9 @@
 package com.ctc.g2w.cfg
 
-object git {
-  import zio.config._
-  import ConfigDescriptor._
+import zio.config._
+import ConfigDescriptor._
 
+object git {
   case class Repo(url: String)
 
   sealed trait Mode { def name: String }

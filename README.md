@@ -1,4 +1,4 @@
-anchore policy sidecar
+anchore policy sidecar (psc)
 ===
 
 [Docs](doc/README.md)
@@ -11,6 +11,12 @@ A sidecar operator that schedules policy generation from git managed metadata an
 
 - Ref: run once against a specified ref and then terminate
 - Branch: run once against a branch ref and then continue to poll for additional commits to the branch
+
+### versioning
+
+- Policy Bundle id is set using the git commit id
+- Whitelist id is set using the git commit id
+- Version fields on objects are API version and not related to git commit id
 
 ### dev
 

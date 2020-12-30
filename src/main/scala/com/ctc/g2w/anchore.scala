@@ -1,6 +1,6 @@
 package com.ctc.g2w
 
-import com.ctc.g2w.api.anchore.PolicyBundleRecord
+import com.ctc.g2w.api.anchore.{PolicyBundleRecord, Whitelist}
 import com.ctc.g2w.api.auth
 import com.ctc.g2w.api.auth.{OAuthResponse, OAuthToken}
 import spray.json._
@@ -15,6 +15,7 @@ object anchore {
       def health(): UIO[api.anchore.Health]
       def activePolicy(): ZIO[AnchoreAuth, Throwable, PolicyBundleRecord]
       def policies(): ZIO[AnchoreAuth, Throwable, List[PolicyBundleRecord]]
+      def activate(whitelist: Whitelist): ZIO[AnchoreAuth, Throwable, PolicyBundleRecord]
     }
 
     def live(config: cfg.anchore.Http): Layer[AnchoreAuth, AnchoreAPI] = ZLayer.succeed(
@@ -39,6 +40,20 @@ object anchore {
               .parseJson
               .convertTo[List[PolicyBundleRecord]]
           } yield res
+
+        def activate(whitelist: Whitelist): ZIO[AnchoreAuth, Throwable, PolicyBundleRecord] = ZIO.succeed(
+          defaults.anchore.DefaultBundle.copy(
+            id = whitelist.id,
+            mappings = List(defaults.anchore.DefaultMapping.copy(whitelist_ids = Some(List(whitelist.id)))),
+            whitelists = Some(List(whitelist))
+          )
+        ).map(_.toJson.compactPrint)
+          .flatMap(b =>
+            for {
+              h <- AnchoreAuth.token().map(_.headers ++ Seq("Content-Type" -> "application/json"))
+              res = requests.post(s"${config.url()}/v1/policies", headers = h, data = b)
+            } yield res.text().parseJson.convertTo[PolicyBundleRecord]
+          )
       }
     )
 
@@ -47,6 +62,8 @@ object anchore {
       ZIO.accessM(_.get.activePolicy())
     def policies(): ZIO[AnchoreAPI with AnchoreAuth, Throwable, List[PolicyBundleRecord]] =
       ZIO.accessM(_.get.policies())
+    def activate(whitelist: Whitelist): ZIO[AnchoreAPI with AnchoreAuth, Throwable, PolicyBundleRecord] =
+      ZIO.accessM(_.get.activate(whitelist))
   }
 
   type AnchoreAuth = Has[AnchoreAuth.Service]

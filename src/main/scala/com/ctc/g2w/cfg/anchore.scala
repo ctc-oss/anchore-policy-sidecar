@@ -1,9 +1,9 @@
 package com.ctc.g2w.cfg
 
-object anchore {
-  import zio.config._
-  import ConfigDescriptor._
+import zio.config._
+import ConfigDescriptor._
 
+object anchore {
   case class Http(addr: String, port: Int) {
     def url(scheme: String = "http"): String = s"$scheme://$addr:$port"
   }

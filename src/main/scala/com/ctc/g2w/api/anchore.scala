@@ -49,9 +49,14 @@ object anchore {
     implicit val format: RootJsonFormat[Policy] = jsonFormat5(Policy.apply)
   }
 
-  case class PolicyRule(id: Option[String], gate: String, trigger: String, action: String)
+  case class PolicyRule(id: Option[String], gate: String, trigger: String, action: String, params: List[RuleParam])
   object PolicyRule extends DefaultJsonProtocol {
-    implicit val format: RootJsonFormat[PolicyRule] = jsonFormat4(PolicyRule.apply)
+    implicit val format: RootJsonFormat[PolicyRule] = jsonFormat5(PolicyRule.apply)
+  }
+
+  case class RuleParam(name: String, value: String)
+  object RuleParam extends DefaultJsonProtocol {
+    implicit val format: RootJsonFormat[RuleParam] = jsonFormat2(RuleParam.apply)
   }
 
   case class Whitelist(
@@ -74,14 +79,13 @@ object anchore {
       id: Option[String],
       name: String,
       whitelist_ids: Option[List[String]],
-      policy_id: Option[String],
       policy_ids: Option[List[String]],
       registry: String,
       repository: String,
       image: ImageRef
   )
   object MappingRule extends DefaultJsonProtocol {
-    implicit val format: RootJsonFormat[MappingRule] = jsonFormat8(MappingRule.apply)
+    implicit val format: RootJsonFormat[MappingRule] = jsonFormat7(MappingRule.apply)
   }
 
   case class ImageSelectionRule(
