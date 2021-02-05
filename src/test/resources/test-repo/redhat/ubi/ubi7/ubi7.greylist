@@ -1,0 +1,603 @@
+{
+  "image_name": "redhat/ubi/ubi7",
+  "image_tag": "7.9",
+  "image_parent_name": "",
+  "image_parent_tag": "",
+  "approval_status": "approved",
+  "authorized_approvers": [
+  ],
+  "whitelisted_vulnerabilities": [
+    {
+      "vulnerability": "CVE-2020-12399",
+      "vuln_description": "nss-3.53.1-3.el7_9",
+      "vuln_source": "Twistlock",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched in version 3.44.4 on 5/19/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2019-17450",
+      "vuln_description": "binutils-2.27-44.base.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "fixed in upstream branches as of October 2019. Redhat has not backported the fix or made v2.3.4 availlable"
+    },
+    {
+      "vulnerability": "CVE-2014-4043",
+      "vuln_description": "glibc-2.17-317.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "fixed version releaased in September 2015 (v2.2.0). Fix \"Deferred\" by RedHat"
+    },
+    {
+      "vulnerability": "CVE-2014-4043",
+      "vuln_description": "glibc-common-2.17-317.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "fixed version releaased in September 2015 (v2.2.0). Fix \"Deferred\" by RedHat"
+    },
+    {
+      "vulnerability": "CVE-2014-3591",
+      "vuln_description": "gnupg2-2.0.22-5.el7_5",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "this was fixed as of version 1.4.19 in 2015. Fix \"Deferred\" by RedHat"
+    },
+    {
+      "vulnerability": "CVE-2014-4617",
+      "vuln_description": "gnupg2-2.0.22-5.el7_5",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "fix committed upstream in Jun 2014. fix \"deferred\" by RedHat"
+    },
+    {
+      "vulnerability": "CVE-2015-0247",
+      "vuln_description": "libcom_err-1.42.9-19.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "fixed upstream in 1.42.12 in 2015. Fix \"deferred\" by RedHat"
+    },
+    {
+      "vulnerability": "CVE-2014-3591",
+      "vuln_description": "libgcrypt-1.5.3-14.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "fixed version released in 2016 (v 1.6.3). Fix \"Deferred\" by RedHat"
+    },
+    {
+      "vulnerability": "CVE-2014-5270",
+      "vuln_description": "libgcrypt-1.5.3-14.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "fixed upstream version released August 2014 (v 1.5.4). Fix \"deferred\" by RedHat"
+    },
+    {
+      "vulnerability": "CVE-2015-2059",
+      "vuln_description": "libidn-1.28-4.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Vendor indicates a fix has been deferred and is not currently available."
+    },
+    {
+      "vulnerability": "CVE-2020-12399",
+      "vuln_description": "nss-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched in version 3.44.4 on 5/19/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-12413",
+      "vuln_description": "nss-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "NSS as shipped with Red Hat Enterprise Linux 6, 7, and 8 does not re-use Diffie-Hellman Ephemeral (DHE) keys. It reuses Elliptic Curve Diffie-Hellman Ephemeral (ECDHE) keys by default, but Attacking ECDH and ECDHE cipher suites are not in the scope of the Raccoon Attack and generally considered to be unaffected. You can configure nss mitigated by setting the SSL_REUSE_SERVER_ECDHE_KEY socket option to PR_FALSE."
+    },
+    {
+      "vulnerability": "CVE-2020-12399",
+      "vuln_description": "nss-sysinit-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched in version 3.44.4 on 5/19/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-12413",
+      "vuln_description": "nss-sysinit-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "NSS as shipped with Red Hat Enterprise Linux 6, 7, and 8 does not re-use Diffie-Hellman Ephemeral (DHE) keys. It reuses Elliptic Curve Diffie-Hellman Ephemeral (ECDHE) keys by default, but Attacking ECDH and ECDHE cipher suites are not in the scope of the Raccoon Attack and generally considered to be unaffected. You can configure nss mitigated by setting the SSL_REUSE_SERVER_ECDHE_KEY socket option to PR_FALSE."
+    },
+    {
+      "vulnerability": "CVE-2020-12399",
+      "vuln_description": "nss-tools-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched in version 3.44.4 on 5/19/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-12413",
+      "vuln_description": "nss-tools-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "NSS as shipped with Red Hat Enterprise Linux 6, 7, and 8 does not re-use Diffie-Hellman Ephemeral (DHE) keys. It reuses Elliptic Curve Diffie-Hellman Ephemeral (ECDHE) keys by default, but Attacking ECDH and ECDHE cipher suites are not in the scope of the Raccoon Attack and generally considered to be unaffected. You can configure nss mitigated by setting the SSL_REUSE_SERVER_ECDHE_KEY socket option to PR_FALSE."
+    },
+    {
+      "vulnerability": "41cb7cdf04850e33a11f80c42bf660b3",
+      "vuln_description": "Dockerfile directive 'HEALTHCHECK' not found, matching condition 'not_exists' check\n Gate: dockerfile\n Trigger: instruction\n Policy ID: DoDDockerfileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Not applicable. Healthchecks do not apply to base images because base images, by design, do not execute any application by default."
+    },
+    {
+      "vulnerability": "68e630cef4a8533b139875aa5fc54da5",
+      "vuln_description": "User root found as effective user, which is explicity not allowed list\n Gate: dockerfile\n Trigger: effective_user\n Policy ID: DoDEffectiveUserChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Not applicable to base image."
+    },
+    {
+      "vulnerability": "639f6f1177735759703e928c14714a59",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/chage. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for chage functionality."
+    },
+    {
+      "vulnerability": "ad4759bf9c3ce28f10d9d2f6eae51fa1",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/chfn. Mode: 0o104711\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for chfn functionality."
+    },
+    {
+      "vulnerability": "c67a2c13ebe88380113e7fbcb2437714",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/chsh. Mode: 0o104711\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for chsh functionality."
+    },
+    {
+      "vulnerability": "c2e44319ae5b3b040044d8ae116d1c2f",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/gpasswd. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for gpasswd functionality."
+    },
+    {
+      "vulnerability": "698044205a9c4a6d48b7937e66a6bf4f",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/mount. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for mount functionality."
+    },
+    {
+      "vulnerability": "463a9a24225c26f7a5bf3f38908e5cb3",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/newgrp. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for newgrp functionality."
+    },
+    {
+      "vulnerability": "bcd159901fe47efddae5c095b4b0d7fd",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/passwd. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for passwd functionality."
+    },
+    {
+      "vulnerability": "320a97c6816565eedf3545833df99dd0",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/su. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for su functionality."
+    },
+    {
+      "vulnerability": "e7573262736ef52353cde3bae2617782",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/umount. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for umount functionality."
+    },
+    {
+      "vulnerability": "addbb93c22e9b0988b8b40392a4538cb",
+      "vuln_description": "SUID or SGID found set on file /usr/bin/write. Mode: 0o102755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for write functionality."
+    },
+    {
+      "vulnerability": "3456a263793066e9b5063ada6e47917d",
+      "vuln_description": "SUID or SGID found set on file /usr/libexec/dbus-1/dbus-daemon-launch-helper. Mode: 0o104750\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for dbus-daemon-launch-helper functionality."
+    },
+    {
+      "vulnerability": "3e5fad1c039f3ecfd1dcdc94d2f1f9a0",
+      "vuln_description": "SUID or SGID found set on file /usr/libexec/utempter/utempter. Mode: 0o102711\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for utempter functionality."
+    },
+    {
+      "vulnerability": "abb121e9621abdd452f65844954cf1c1",
+      "vuln_description": "SUID or SGID found set on file /usr/sbin/pam_timestamp_check. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for pam_timestamp_check functionality."
+    },
+    {
+      "vulnerability": "34de21e516c0ca50a96e5386f163f8bf",
+      "vuln_description": "SUID or SGID found set on file /usr/sbin/unix_chkpwd. Mode: 0o104755\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for unix_chkpwd functionality."
+    },
+    {
+      "vulnerability": "c4ad80832b361f81df2a31e5b6b09864",
+      "vuln_description": "SUID or SGID found set on file /usr/sbin/userhelper. Mode: 0o104711\n Gate: files\n Trigger: suid_or_guid_set\n Policy ID: DoDFileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Required for userhelper functionality."
+    },
+    {
+      "vulnerability": "CCE-80522-6",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. Root user configured correctly. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80521-8",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. Root user configured correctly. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80536-6",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. Umask is correctly set. No users other than root exist."
+    },
+    {
+      "vulnerability": "CCE-80526-7",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files are owned by the root user. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80530-9",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files in root folder have the appropriate permissions. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80532-5",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files in root folder have the appropriate ownerships. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80533-3",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files in root folder have the appropriate ownerships. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80534-1",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files in root folder have the appropriate ownerships. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80535-8",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files in root folder have the appropriate permissions. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80531-7",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files in root folder have the appropriate ownerships. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80527-5",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files are owned by the root user. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80523-4",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. No user initialization files execute any world-writable programs."
+    },
+    {
+      "vulnerability": "CCE-80524-2",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. Path does not contain any non-local directories."
+    },
+    {
+      "vulnerability": "CCE-80525-9",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. All files in root folder have the appropriate permissions. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-80529-1",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Manual check. Root folder exists. No other users exist."
+    },
+    {
+      "vulnerability": "CCE-27209-6",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "False finding. This is flagging on files such as DNF package databases which are being updated during build."
+    },
+    {
+      "vulnerability": "CCE-80134-0",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "False finding. All files are owned by a user."
+    },
+    {
+      "vulnerability": "CCE-80171-2",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Not applicable. Ipsec is not utilized within the container."
+    },
+    {
+      "vulnerability": "CCE-80438-5",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "False finding. /etc/resolv.conf is managed by the container runtime."
+    },
+    {
+      "vulnerability": "CVE-2020-25648",
+      "vuln_description": "nss-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream 10/16/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-25648",
+      "vuln_description": "nss-sysinit-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream 10/16/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-25648",
+      "vuln_description": "nss-tools-3.53.1-3.el7_9",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream 10/16/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-25648",
+      "vuln_description": "nss-3.53.1-3.el7_9",
+      "vuln_source": "Twistlock",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream 10/16/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-25692",
+      "vuln_description": "openldap-2.4.44-22.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream 10/22/2020 in version 2.4.55. RH has not patched."
+    },
+    {
+      "vulnerability": "CCE-80368-4",
+      "vuln_description": "N/A",
+      "vuln_source": "OpenSCAP",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Not applicable. Containers are not a host but instead run on a host. Containers send logs to the host node which may be monitored for intrusions."
+    },
+    {
+      "vulnerability": "CVE-2020-10029",
+      "vuln_description": "glibc-2.17-317.el7",
+      "vuln_source": "Twistlock",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched on 2/12/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-29573",
+      "vuln_description": "glibc-2.17-317.el7",
+      "vuln_source": "Twistlock",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched on 9/22/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-25692",
+      "vuln_description": "openldap-2.4.44-22.el7",
+      "vuln_source": "Twistlock",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream 10/22/2020 in version 2.4.55. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2015-2059",
+      "vuln_description": "libidn-1.28-4.el7",
+      "vuln_source": "Twistlock",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Vendor indicates a fix has been deferred and is not currently available."
+    },
+    {
+      "vulnerability": "CVE-2020-10029",
+      "vuln_description": "glibc-2.17-317.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched on 2/12/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-29573",
+      "vuln_description": "glibc-2.17-317.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched on 9/22/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-10029",
+      "vuln_description": "glibc-common-2.17-317.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched on 2/12/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-29573",
+      "vuln_description": "glibc-common-2.17-317.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched on 9/22/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-29361",
+      "vuln_description": "p11-kit-0.23.5-3.el7",
+      "vuln_source": "Twistlock",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream in version p11-kit 0.23.22 on 12/11/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-29361",
+      "vuln_description": "p11-kit-0.23.5-3.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream in version p11-kit 0.23.22 on 12/11/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-29362",
+      "vuln_description": "p11-kit-0.23.5-3.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream in version p11-kit 0.23.22 on 12/11/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-29361",
+      "vuln_description": "p11-kit-trust-0.23.5-3.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream in version p11-kit 0.23.22 on 12/11/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-29362",
+      "vuln_description": "p11-kit-trust-0.23.5-3.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Patched upstream in version p11-kit 0.23.22 on 12/11/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2019-25013",
+      "vuln_description": "glibc-2.17-317.el7",
+      "vuln_source": "Twistlock",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched in version 2.33 on 12/21/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2019-25013",
+      "vuln_description": "glibc-2.17-317.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched in version 2.33 on 12/21/2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2019-25013",
+      "vuln_description": "glibc-common-2.17-317.el7",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2021-01-11 21:00:40",
+      "justification": "Upstream patched in version 2.33 on 12/21/2020. RH has not patched."
+    }
+  ]
+}

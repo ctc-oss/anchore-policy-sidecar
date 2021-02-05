@@ -1,0 +1,9 @@
+{
+    "image_name": "redhat/python/python",
+    "image_tag": "3.6",
+    "image_parent_name": "redhat/ubi/ubi8",
+    "image_parent_tag": "8.1",
+    "authorized_approvers": [
+    ],
+    "whitelisted_vulnerabilities": []
+}

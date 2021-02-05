@@ -1,0 +1,179 @@
+{
+  "image_name": "redhat/python/python36",
+  "image_tag": "3.6",
+  "image_parent_name": "redhat/ubi/ubi8",
+  "image_parent_tag": "8.3",
+  "approval_status": "approved",
+  "authorized_approvers": [
+  ],
+  "whitelisted_vulnerabilities": [
+    {
+      "vulnerability": "CVE-2019-20907",
+      "vuln_description": "platform-python-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream patched on 7/15/2020 but has not marked a stable release. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-14422",
+      "vuln_description": "platform-python-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream has patched on 6/30/2020 but has not marked a stable release. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-8492",
+      "vuln_description": "platform-python-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "False positive. RedHat indicates this package is not affected in UBI8."
+    },
+    {
+      "vulnerability": "CVE-2019-20907",
+      "vuln_description": "platform-python-devel-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream patched on 7/15/2020 but has not marked a stable release. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-14422",
+      "vuln_description": "platform-python-devel-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream has patched on 6/30/2020 but has not marked a stable release. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-8492",
+      "vuln_description": "platform-python-devel-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "False positive. RedHat indicates this package is not affected in UBI8."
+    },
+    {
+      "vulnerability": "CVE-2019-20907",
+      "vuln_description": "python3-libs-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream patched on 7/15/2020 but has not marked a stable release. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-14422",
+      "vuln_description": "python3-libs-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream has patched on 6/30/2020 but has not marked a stable release. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-8492",
+      "vuln_description": "python3-libs-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "False positive. RedHat indicates this package is not affected in UBI8."
+    },
+    {
+      "vulnerability": "VULNDB-229216",
+      "vuln_description": "pip-9.0.3",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "pip-9.0.3 is latest version available in RH repo."
+    },
+    {
+      "vulnerability": "VULNDB-229216",
+      "vuln_description": "pip-9.0.3",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "pip-9.0.3 is latest version available in RH repo."
+    },
+    {
+      "vulnerability": "41cb7cdf04850e33a11f80c42bf660b3",
+      "vuln_description": "Dockerfile directive 'HEALTHCHECK' not found, matching condition 'not_exists' check\n Gate: dockerfile\n Trigger: instruction\n Policy ID: DoDDockerfileChecks",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Healthcheck does not apply to programming language based images"
+    },
+    {
+      "vulnerability": "CVE-2020-26116",
+      "vuln_description": "platform-python-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Patched upstream in version 3.6.12 on July 19, 2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-26116",
+      "vuln_description": "platform-python-devel-3.6.8-31.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Patched upstream in version 3.6.12 on July 19, 2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2019-20916",
+      "vuln_description": "platform-python-pip-9.0.3-16.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Patched upstream in 19.2 on 6/11/19. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-26116",
+      "vuln_description": "python3-libs-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Patched upstream in version 3.6.12 on July 19, 2020. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2019-20916",
+      "vuln_description": "python3-pip-9.0.3-16.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Patched upstream in 19.2 on 6/11/19. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2019-20916",
+      "vuln_description": "python3-pip-wheel-9.0.3-16.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Patched upstream in 19.2 on 6/11/19. RH has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-27619",
+      "vuln_description": "platform-python-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream patched on 10/19/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-27619",
+      "vuln_description": "platform-python-devel-3.6.8-31.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream patched on 10/19/2020. Redhat has not patched."
+    },
+    {
+      "vulnerability": "CVE-2020-27619",
+      "vuln_description": "python3-libs-3.6.8-23.el8",
+      "vuln_source": "Anchore",
+      "status": "approved",
+      "approved_date": "2020-10-27 19:19:47",
+      "justification": "Upstream patched on 10/19/2020. Redhat has not patched."
+    }
+  ]
+}
