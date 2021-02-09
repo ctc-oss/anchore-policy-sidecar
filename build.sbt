@@ -24,6 +24,7 @@ libraryDependencies := Seq(
   "dev.zio" %% "zio-process" % "0.1.0",
   "dev.zio" %% "zio-config" % "1.0.0-RC27",
   "dev.zio" %% "zio-config-typesafe" % "1.0.0-RC27",
+  "com.github.pathikrit" %% "better-files" % "3.9.1",
   "com.lihaoyi" %% "requests" % "0.6.5",
   "io.spray" %% "spray-json" % "1.3.5",
   "dev.zio" %% "zio-test" % zioVersion % Test,

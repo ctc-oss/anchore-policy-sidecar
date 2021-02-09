@@ -45,3 +45,4 @@ the anchore api models were generated with [sbt-swagger-codegen](https://github.
 ### reference
 - https://docs.anchore.com/current/docs/engine/general/concepts/policy/bundles/
 - https://github.com/anchore/anchore-engine/blob/master/anchore_engine/services/apiext/swagger/swagger.yaml
+- https://github.com/anchore/anchore-engine/blob/master/docs/content/docs/general/concepts/policy/bundles/_index.md#whitelists
