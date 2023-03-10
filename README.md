@@ -1,6 +1,10 @@
 anchore policy sidecar (psc)
 ===
 
+### IMPORTANT NOTE
+
+As of 2023, Anchore Engine is no longer maintained. There will be no future versions released. Users are advised to use [Syft](https://github.com/anchore/syft) and [Grype](https://github.com/anchore/grype).
+
 [Docs](doc/README.md)
 
 ### policy automation through gitops
